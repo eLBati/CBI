@@ -52,7 +52,7 @@ class Record():
 
     def __getitem__(self, key):
         """Overloading in order to retrieve content
-            by position or field name as specified in CBI docs"""
+            by position or field name as specified by CBI docs"""
         if isinstance(key, slice) and not key.step:
             return self.__str__()[key.start-1:key.stop]
         elif isinstance(key, str):
@@ -65,7 +65,7 @@ class Record():
 
     def __setitem__(self, key, item):
         """Overloading in order to write content
-            by position or field name as specified in CBI docs"""
+            by position or field name as specified by CBI docs"""
         if isinstance(key, slice) and not key.step:
             for field in self.fields:
                 if field.fromposition == key.start and field.toposition == key.stop:
