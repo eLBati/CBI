@@ -97,7 +97,7 @@ class Record():
 
 class IMRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, 'IM')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -114,10 +114,12 @@ class IMRecord(Record):
         self.appendfield(Field(114, 114, 'codice_divisa'))
         self.appendfield(Field(115, 115, 'filler4'))
         self.appendfield(Field(116, 120, 'campo_non_disponibile'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class EFRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, 'EF')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -133,10 +135,12 @@ class EFRecord(Record):
         self.appendfield(Field(90, 113, 'filler2'))
         self.appendfield(Field(114, 114, 'codice_divisa'))
         self.appendfield(Field(115, 120, 'campo_non_disponibile'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class XIVRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '14')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -155,10 +159,12 @@ class XIVRecord(Record):
         self.appendfield(Field(98, 113, 'codice_cliente_debitore'))
         self.appendfield(Field(114, 119, 'filler4'))
         self.appendfield(Field(120, 120, 'codice_divisa'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class XVIRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '16')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -171,10 +177,12 @@ class XVIRecord(Record):
         self.appendfield(Field(26, 37, 'numero_conto'))
         self.appendfield(Field(38, 44, 'filler2'))
         self.appendfield(Field(45, 120, 'filler3'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class XXRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '20')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -184,10 +192,12 @@ class XXRecord(Record):
         self.appendfield(Field(59, 82, '3_segmento'))
         self.appendfield(Field(83, 106, '4_segmento'))
         self.appendfield(Field(107, 120, 'filler2'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class XXXRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '30')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -196,10 +206,12 @@ class XXXRecord(Record):
         self.appendfield(Field(41, 70, '2_segmento'))
         self.appendfield(Field(71, 86, 'codice_fiscale_cliente'))
         self.appendfield(Field(87, 120, 'filler2'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class XLRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '40')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -210,10 +222,12 @@ class XLRecord(Record):
         self.appendfield(Field(71, 98, 'completamento_indirizzo'))
         self.appendfield(Field(99, 100, 'codice_paese'))
         self.appendfield(Field(101, 120, 'filler2'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class LRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '50')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -221,10 +235,12 @@ class LRecord(Record):
         self.appendfield(Field(11, 50, '1_segmento'))
         self.appendfield(Field(51, 90, '2_segmento'))
         self.appendfield(Field(91, 120, 'filler2'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class LIRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '51')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -233,20 +249,24 @@ class LIRecord(Record):
         self.appendfield(Field(21, 74, 'filler2'))
         self.appendfield(Field(75, 86, 'codice_identificativo_univoco'))
         self.appendfield(Field(87, 120, 'filler3'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class LIXRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '59')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
         self.appendfield(Field(11, 65, '1_segmento'))
         self.appendfield(Field(66, 120, '2_segmento'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 class LXXRecord(Record):
 
-    def __init__(self):
+    def __init__(self, rawrecord=''):
         Record.__init__(self, '70')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
@@ -256,5 +276,7 @@ class LXXRecord(Record):
         self.appendfield(Field(95, 95, 'filler3'))
         self.appendfield(Field(96, 100, 'campo_a_disposizione'))
         self.appendfield(Field(101, 120, 'chiavi_di_controllo'))
+        if rawrecord:
+            self.readrawrecord(rawrecord)
 
 
