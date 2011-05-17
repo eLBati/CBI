@@ -99,7 +99,7 @@ class Record(object):
             field.content = rawrecord[
                 (field.fromposition - 1):field.toposition]
 
-
+'''fare una classe sola differenziata in base al code e mettere in un dizionario il mapping dei campi'''
 class IMRecord(Record):
 
     def __init__(self, rawrecord=''):
