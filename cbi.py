@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-import time
 
 class Field():
 
@@ -38,6 +37,7 @@ class Field():
     def __str__(self):
         return self.content
 
+
 class Record():
 
     def __init__(self, code):
@@ -54,12 +54,12 @@ class Record():
         """Overloading in order to retrieve content
             by position or field name as specified by CBI docs"""
         if isinstance(key, slice) and not key.step:
-            return self.__str__()[key.start-1:key.stop]
+            return self.__str__()[key.start - 1:key.stop]
         elif isinstance(key, str):
             for field in self.fields:
                 if field.name == key:
                     return field.content
-            raise IndexError('Impossible to find field with that key')            
+            raise IndexError('Impossible to find field with that key')
         else:
             return self.__str__()[key]
 
@@ -68,7 +68,8 @@ class Record():
             by position or field name as specified by CBI docs"""
         if isinstance(key, slice) and not key.step:
             for field in self.fields:
-                if field.fromposition == key.start and field.toposition == key.stop:
+                if (field.fromposition == key.start
+                    and field.toposition == key.stop):
                     field.content = item
                     return
             raise IndexError('Impossible to find field with that position')
@@ -76,13 +77,15 @@ class Record():
             for field in self.fields:
                 if field.name == key:
                     if len(item) > field.length():
-                        raise BufferError('Specified field value passes field capacity')
+                        raise BufferError(
+                            'Specified field value passes field capacity')
                     else:
                         field.content = item.ljust(field.length())
                         return
-            raise IndexError('Impossible to find field with that key') 
+            raise IndexError('Impossible to find field with that key')
         else:
-            raise TypeError('You must use slice or string to access fields list')
+            raise TypeError(
+                'You must use slice or string to access fields list')
 
     def appendfield(self, field):
         if not isinstance(field, Field):
@@ -93,7 +96,9 @@ class Record():
 
     def readrawrecord(self, rawrecord):
         for field in self.fields:
-            field.content = rawrecord[(field.fromposition - 1):field.toposition]
+            field.content = rawrecord[
+                (field.fromposition - 1):field.toposition]
+
 
 class IMRecord(Record):
 
@@ -117,6 +122,7 @@ class IMRecord(Record):
         if rawrecord:
             self.readrawrecord(rawrecord)
 
+
 class EFRecord(Record):
 
     def __init__(self, rawrecord=''):
@@ -137,6 +143,7 @@ class EFRecord(Record):
         self.appendfield(Field(115, 120, 'campo_non_disponibile'))
         if rawrecord:
             self.readrawrecord(rawrecord)
+
 
 class XIVRecord(Record):
 
@@ -162,6 +169,7 @@ class XIVRecord(Record):
         if rawrecord:
             self.readrawrecord(rawrecord)
 
+
 class XVIRecord(Record):
 
     def __init__(self, rawrecord=''):
@@ -180,6 +188,7 @@ class XVIRecord(Record):
         if rawrecord:
             self.readrawrecord(rawrecord)
 
+
 class XXRecord(Record):
 
     def __init__(self, rawrecord=''):
@@ -195,6 +204,7 @@ class XXRecord(Record):
         if rawrecord:
             self.readrawrecord(rawrecord)
 
+
 class XXXRecord(Record):
 
     def __init__(self, rawrecord=''):
@@ -208,6 +218,7 @@ class XXXRecord(Record):
         self.appendfield(Field(87, 120, 'filler2'))
         if rawrecord:
             self.readrawrecord(rawrecord)
+
 
 class XLRecord(Record):
 
@@ -225,6 +236,7 @@ class XLRecord(Record):
         if rawrecord:
             self.readrawrecord(rawrecord)
 
+
 class LRecord(Record):
 
     def __init__(self, rawrecord=''):
@@ -237,6 +249,7 @@ class LRecord(Record):
         self.appendfield(Field(91, 120, 'filler2'))
         if rawrecord:
             self.readrawrecord(rawrecord)
+
 
 class LIRecord(Record):
 
@@ -252,6 +265,7 @@ class LIRecord(Record):
         if rawrecord:
             self.readrawrecord(rawrecord)
 
+
 class LIXRecord(Record):
 
     def __init__(self, rawrecord=''):
@@ -263,6 +277,7 @@ class LIXRecord(Record):
         self.appendfield(Field(66, 120, '2_segmento'))
         if rawrecord:
             self.readrawrecord(rawrecord)
+
 
 class LXXRecord(Record):
 
@@ -278,5 +293,3 @@ class LXXRecord(Record):
         self.appendfield(Field(101, 120, 'chiavi_di_controllo'))
         if rawrecord:
             self.readrawrecord(rawrecord)
-
-
