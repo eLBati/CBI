@@ -20,7 +20,7 @@
 ##############################################################################
 
 
-class Field():
+class Field(object):
 
     def length(self):
         return (self.toposition - self.fromposition) + 1
@@ -38,7 +38,7 @@ class Field():
         return self.content
 
 
-class Record():
+class Record(object):
 
     def __init__(self, code):
         self.code = code
