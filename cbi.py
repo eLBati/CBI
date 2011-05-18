@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Domsense s.r.l. (<http://www.domsense.com>).
+#    Copyright (C) 2011 Lorenzo Battistini (<lorenzo.battistini@domsense.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,6 +18,195 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
+# This module helps handling CBI files
+# (see http://www.cbi-org.eu for standard)
+# See README for more info
+
+# Struttura del record di testa - codice fisso "IM"
+IM = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'campo_a_disposizione'),
+    (46, 104, 'filler2'),
+    (105, 105, 'tipo_flusso'),
+    (106, 106, 'qualificatore_flusso'),
+    (107, 111, 'soggetto_veicolatore'),
+    (112, 113, 'filler3'),
+    (114, 114, 'codice_divisa'),
+    (115, 115, 'filler4'),
+    (116, 120, 'campo_non_disponibile'),
+    ]
+
+# Struttura del record di coda - codice fisso "EF"
+EF = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'campo_a_disposizione'),
+    (46, 52, 'numero_disposizioni'),
+    (53, 67, 'tot_importi_negativi'),
+    (68, 82, 'tot_importi_positivi'),
+    (83, 89, 'numero_record'),
+    (90, 113, 'filler2'),
+    (114, 114, 'codice_divisa'),
+    (115, 120, 'campo_non_disponibile'),
+    ]
+
+# Struttura del record - codice fisso “14”
+XIV = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 22, 'filler2'),
+    (23, 28, 'data_pagamento'),
+    (29, 33, 'causale'),
+    (34, 46, 'importo'),
+    (47, 47, 'segno'),
+    (48, 52, 'codice_abi_banca'),
+    (53, 57, 'cab_banca'),
+    (58, 69, 'conto'),
+    (70, 91, 'filler3'),
+    (92, 96, 'codice_azienda'),
+    (97, 97, 'tipo_codice'),
+    (98, 113, 'codice_cliente_debitore'),
+    (114, 119, 'filler4'),
+    (120, 120, 'codice_divisa'),
+    ]
+
+# Tipo record 16 (coordinate ordinante)
+XVI = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 12, 'codice_paese'),
+    (13, 14, 'check_digit'),
+    (15, 15, 'cin'),
+    (16, 20, 'codice_abi'),
+    (21, 25, 'codice_cab'),
+    (26, 37, 'numero_conto'),
+    (38, 44, 'filler2'),
+    (45, 120, 'filler3'),
+    ]
+
+# Struttura del record - codice fisso “20”
+XX = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 34, '1_segmento'),
+    (35, 58, '2_segmento'),
+    (59, 82, '3_segmento'),
+    (83, 106, '4_segmento'),
+    (107, 120, 'filler2'),
+    ]
+
+# Struttura del record - codice fisso “30”
+XXX = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 40, '1_segmento'),
+    (41, 70, '2_segmento'),
+    (71, 86, 'codice_fiscale_cliente'),
+    (87, 120, 'filler2'),
+    ]
+
+# Struttura del record - codice fisso “40”
+XL = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 40, 'indirizzo'),
+    (41, 45, 'cap'),
+    (46, 70, 'comune_e_sigla_provincia'),
+    (71, 98, 'completamento_indirizzo'),
+    (99, 100, 'codice_paese'),
+    (101, 120, 'filler2'),
+    ]
+
+# Struttura del record - codice fisso “50”
+L = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 50, '1_segmento'),
+    (51, 90, '2_segmento'),
+    (91, 120, 'filler2'),
+    ]
+
+# Struttura del record - codice fisso “51”
+LI = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 20, 'numero_disposizione'),
+    (21, 74, 'filler2'),
+    (75, 86, 'codice_identificativo_univoco'),
+    (87, 120, 'filler3'),
+    ]
+
+# Struttura del record - codice fisso “59”
+LIX = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 65, '1_segmento'),
+    (66, 120, '2_segmento'),
+    ]
+
+# Struttura del record - codice fisso “70”
+LXX = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 93, 'filler2'),
+    (94, 94, 'tipo_bollettino'),
+    (95, 95, 'filler3'),
+    (96, 100, 'campo_a_disposizione'),
+    (101, 120, 'chiavi_di_controllo'),
+    ]
+
+# Struttura del record di testa - codice fisso “IB”
+IB = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'campo_a_disposizione'),
+    (46, 104, 'filler2'),
+    (105, 105, 'tipo_flusso'),
+    (106, 106, 'qualificatore_flusso'),
+    (107, 111, 'soggetto_veicolatore'),
+    (112, 113, 'filler3'),
+    (114, 114, 'codice_divisa'),
+    (115, 115, 'filler4'),
+    (116, 120, 'campo_non_disponibile'),
+    ]
+
+RECORD_MAPPING = {
+    'IM': IM,
+    'EF': EF,
+    '14': XIV,
+    '16': XVI,
+    '20': XX,
+    '30': XXX,
+    '40': XL,
+    '50': L,
+    '51': LI,
+    '59': LIX,
+    '70': LXX,
+    'IB': IB,
+    }
 
 
 class Field(object):
@@ -41,8 +230,14 @@ class Field(object):
 class BaseRecord(object):
 
     def __init__(self, code):
-        self.code = code
         self.fields = []
+        if code not in RECORD_MAPPING:
+            raise IndexError('Unknown record type %s' % code)
+        for field_args in RECORD_MAPPING[code]:
+            newfield = Field(*field_args)
+            if field_args[2] == 'tipo_record':
+                newfield.content = code
+            self.appendfield(newfield)
 
     def __str__(self):
         c = ''
@@ -59,7 +254,7 @@ class BaseRecord(object):
             for field in self.fields:
                 if field.name == key:
                     return field.content
-            raise IndexError('Impossible to find field with that key')
+            raise IndexError('Impossible to find field with key %s' % key)
         else:
             return self.__str__()[key]
 
@@ -72,17 +267,19 @@ class BaseRecord(object):
                     and field.toposition == key.stop):
                     field.content = item
                     return
-            raise IndexError('Impossible to find field with that position')
+            raise IndexError('Impossible to find field with position %i, %i'
+                % (key.start, key.stop))
         elif isinstance(key, str):
             for field in self.fields:
                 if field.name == key:
                     if len(item) > field.length():
                         raise BufferError(
-                            'Specified field value passes field capacity')
+                            'Specified field value (%i) passes field capacity'
+                            % len(item))
                     else:
                         field.content = item.ljust(field.length())
                         return
-            raise IndexError('Impossible to find field with that key')
+            raise IndexError('Impossible to find field with key %s' % key)
         else:
             raise TypeError(
                 'You must use slice or string to access fields list')
@@ -91,7 +288,7 @@ class BaseRecord(object):
         if not isinstance(field, Field):
             raise TypeError('You can only append Field objects')
         if field.name in [f.name for f in self.fields]:
-            raise IndexError('Field name already present')
+            raise IndexError('Field name %s already present' % field.name)
         self.fields.append(field)
 
     def readrawrecord(self, rawrecord):
@@ -99,197 +296,18 @@ class BaseRecord(object):
             field.content = rawrecord[
                 (field.fromposition - 1):field.toposition]
 
-'''fare una classe sola differenziata in base al code e mettere in un dizionario il mapping dei campi'''
-class IMRecord(BaseRecord):
 
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, 'IM')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 8, 'mittente'))
-        self.appendfield(Field(9, 13, 'ricevente'))
-        self.appendfield(Field(14, 19, 'data_creazione'))
-        self.appendfield(Field(20, 39, 'nome_supporto'))
-        self.appendfield(Field(40, 45, 'campo_a_disposizione'))
-        self.appendfield(Field(46, 104, 'filler2'))
-        self.appendfield(Field(105, 105, 'tipo_flusso'))
-        self.appendfield(Field(106, 106, 'qualificatore_flusso'))
-        self.appendfield(Field(107, 111, 'soggetto_veicolatore'))
-        self.appendfield(Field(112, 113, 'filler3'))
-        self.appendfield(Field(114, 114, 'codice_divisa'))
-        self.appendfield(Field(115, 115, 'filler4'))
-        self.appendfield(Field(116, 120, 'campo_non_disponibile'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
+class Record(BaseRecord):
 
-
-class EFRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, 'EF')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 8, 'mittente'))
-        self.appendfield(Field(9, 13, 'ricevente'))
-        self.appendfield(Field(14, 19, 'data_creazione'))
-        self.appendfield(Field(20, 39, 'nome_supporto'))
-        self.appendfield(Field(40, 45, 'campo_a_disposizione'))
-        self.appendfield(Field(46, 52, 'numero_disposizioni'))
-        self.appendfield(Field(53, 67, 'tot_importi_negativi'))
-        self.appendfield(Field(68, 82, 'tot_importi_positivi'))
-        self.appendfield(Field(83, 89, 'numero_record'))
-        self.appendfield(Field(90, 113, 'filler2'))
-        self.appendfield(Field(114, 114, 'codice_divisa'))
-        self.appendfield(Field(115, 120, 'campo_non_disponibile'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class XIVRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '14')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 22, 'filler2'))
-        self.appendfield(Field(23, 28, 'data_pagamento'))
-        self.appendfield(Field(29, 33, 'causale'))
-        self.appendfield(Field(34, 46, 'importo'))
-        self.appendfield(Field(47, 47, 'segno'))
-        self.appendfield(Field(48, 52, 'codice_abi_banca'))
-        self.appendfield(Field(53, 57, 'cab_banca'))
-        self.appendfield(Field(58, 69, 'conto'))
-        self.appendfield(Field(70, 91, 'filler3'))
-        self.appendfield(Field(92, 96, 'codice_azienda'))
-        self.appendfield(Field(97, 97, 'tipo_codice'))
-        self.appendfield(Field(98, 113, 'codice_cliente_debitore'))
-        self.appendfield(Field(114, 119, 'filler4'))
-        self.appendfield(Field(120, 120, 'codice_divisa'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class XVIRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '16')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 12, 'codice_paese'))
-        self.appendfield(Field(13, 14, 'check_digit'))
-        self.appendfield(Field(15, 15, 'cin'))
-        self.appendfield(Field(16, 20, 'codice_abi'))
-        self.appendfield(Field(21, 25, 'codice_cab'))
-        self.appendfield(Field(26, 37, 'numero_conto'))
-        self.appendfield(Field(38, 44, 'filler2'))
-        self.appendfield(Field(45, 120, 'filler3'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class XXRecord(Record):
-
-    def __init__(self, rawrecord=''):
-        Record.__init__(self, '20')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 34, '1_segmento'))
-        self.appendfield(Field(35, 58, '2_segmento'))
-        self.appendfield(Field(59, 82, '3_segmento'))
-        self.appendfield(Field(83, 106, '4_segmento'))
-        self.appendfield(Field(107, 120, 'filler2'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class XXXRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '30')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 40, '1_segmento'))
-        self.appendfield(Field(41, 70, '2_segmento'))
-        self.appendfield(Field(71, 86, 'codice_fiscale_cliente'))
-        self.appendfield(Field(87, 120, 'filler2'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class XLRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '40')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 40, 'indirizzo'))
-        self.appendfield(Field(41, 45, 'cap'))
-        self.appendfield(Field(46, 70, 'comune_e_sigla_provincia'))
-        self.appendfield(Field(71, 98, 'completamento_indirizzo'))
-        self.appendfield(Field(99, 100, 'codice_paese'))
-        self.appendfield(Field(101, 120, 'filler2'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class LRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '50')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 50, '1_segmento'))
-        self.appendfield(Field(51, 90, '2_segmento'))
-        self.appendfield(Field(91, 120, 'filler2'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class LIRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '51')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 20, 'numero_disposizione'))
-        self.appendfield(Field(21, 74, 'filler2'))
-        self.appendfield(Field(75, 86, 'codice_identificativo_univoco'))
-        self.appendfield(Field(87, 120, 'filler3'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class LIXRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '59')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 65, '1_segmento'))
-        self.appendfield(Field(66, 120, '2_segmento'))
-        if rawrecord:
-            self.readrawrecord(rawrecord)
-
-
-class LXXRecord(BaseRecord):
-
-    def __init__(self, rawrecord=''):
-        BaseRecord.__init__(self, '70')
-        self.appendfield(Field(1, 1, 'filler1'))
-        self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
-        self.appendfield(Field(4, 10, 'numero_progressivo'))
-        self.appendfield(Field(11, 93, 'filler2'))
-        self.appendfield(Field(94, 94, 'tipo_bollettino'))
-        self.appendfield(Field(95, 95, 'filler3'))
-        self.appendfield(Field(96, 100, 'campo_a_disposizione'))
-        self.appendfield(Field(101, 120, 'chiavi_di_controllo'))
-        if rawrecord:
+    #we create EF record structure by default
+    def __init__(self, rawrecord='EF'):
+        if len(rawrecord) == 2:
+            code = rawrecord
+        elif len(rawrecord) == 120:
+            code = rawrecord[1:3]
+        else:
+            raise TypeError('String (%s) must contain 2 or 120 chars'
+                % rawrecord)
+        BaseRecord.__init__(self, code)
+        if len(rawrecord) == 120:
             self.readrawrecord(rawrecord)
