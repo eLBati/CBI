@@ -38,7 +38,7 @@ class Field(object):
         return self.content
 
 
-class Record(object):
+class BaseRecord(object):
 
     def __init__(self, code):
         self.code = code
@@ -100,10 +100,10 @@ class Record(object):
                 (field.fromposition - 1):field.toposition]
 
 '''fare una classe sola differenziata in base al code e mettere in un dizionario il mapping dei campi'''
-class IMRecord(Record):
+class IMRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, 'IM')
+        BaseRecord.__init__(self, 'IM')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 8, 'mittente'))
@@ -123,10 +123,10 @@ class IMRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class EFRecord(Record):
+class EFRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, 'EF')
+        BaseRecord.__init__(self, 'EF')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 8, 'mittente'))
@@ -145,10 +145,10 @@ class EFRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class XIVRecord(Record):
+class XIVRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '14')
+        BaseRecord.__init__(self, '14')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
@@ -170,10 +170,10 @@ class XIVRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class XVIRecord(Record):
+class XVIRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '16')
+        BaseRecord.__init__(self, '16')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
@@ -205,10 +205,10 @@ class XXRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class XXXRecord(Record):
+class XXXRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '30')
+        BaseRecord.__init__(self, '30')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
@@ -220,10 +220,10 @@ class XXXRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class XLRecord(Record):
+class XLRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '40')
+        BaseRecord.__init__(self, '40')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
@@ -237,10 +237,10 @@ class XLRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class LRecord(Record):
+class LRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '50')
+        BaseRecord.__init__(self, '50')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
@@ -251,10 +251,10 @@ class LRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class LIRecord(Record):
+class LIRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '51')
+        BaseRecord.__init__(self, '51')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
@@ -266,10 +266,10 @@ class LIRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class LIXRecord(Record):
+class LIXRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '59')
+        BaseRecord.__init__(self, '59')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
@@ -279,10 +279,10 @@ class LIXRecord(Record):
             self.readrawrecord(rawrecord)
 
 
-class LXXRecord(Record):
+class LXXRecord(BaseRecord):
 
     def __init__(self, rawrecord=''):
-        Record.__init__(self, '70')
+        BaseRecord.__init__(self, '70')
         self.appendfield(Field(1, 1, 'filler1'))
         self.appendfield(Field(2, 3, 'tipo_record', content=self.code))
         self.appendfield(Field(4, 10, 'numero_progressivo'))
