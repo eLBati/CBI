@@ -209,6 +209,7 @@ RECORD_MAPPING = {
     }
 
 
+#TODO add fields validation as specified in standard
 class Field(object):
 
     def length(self):
