@@ -321,7 +321,7 @@ class Flow(object):
         self.footer = footer
         self.disposals = disposals
 
-    def readfile(self, filepath, lastrecordidentifier='14'):
+    def readfile(self, filepath, lastrecordidentifier='70'):
         rows = []
         f = open(filepath, 'r')
         for line in f:
@@ -348,3 +348,6 @@ class Flow(object):
             raise IndexError(
                 'Last record identifier %s for disposals not found'
                 % lastrecordidentifier)
+
+    def writefile(self, filepath):  # TODO
+        f = open(filepath, 'w')
