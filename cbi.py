@@ -228,10 +228,18 @@ class Field(object):
         return self.content
 
 
-class BaseRecord(object):
+class Record(object):
 
-    def __init__(self, code):
+    #we create EF record structure by default
+    def __init__(self, rawrecord='EF'):
         self.fields = []
+        if len(rawrecord) == 2:
+            code = rawrecord
+        elif len(rawrecord) == 120:
+            code = rawrecord[1:3]
+        else:
+            raise TypeError('String (%s) must contain 2 or 120 chars'
+                % rawrecord)
         if code not in RECORD_MAPPING:
             raise IndexError('Unknown record type %s' % code)
         for field_args in RECORD_MAPPING[code]:
@@ -239,6 +247,8 @@ class BaseRecord(object):
             if field_args[2] == 'tipo_record':
                 newfield.content = code
             self.appendfield(newfield)
+        if len(rawrecord) == 120:
+            self.readrawrecord(rawrecord)
 
     def __str__(self):
         c = ''
@@ -298,17 +308,43 @@ class BaseRecord(object):
                 (field.fromposition - 1):field.toposition]
 
 
-class Record(BaseRecord):
+class Disposal(object):
 
-    #we create EF record structure by default
-    def __init__(self, rawrecord='EF'):
-        if len(rawrecord) == 2:
-            code = rawrecord
-        elif len(rawrecord) == 120:
-            code = rawrecord[1:3]
-        else:
-            raise TypeError('String (%s) must contain 2 or 120 chars'
-                % rawrecord)
-        BaseRecord.__init__(self, code)
-        if len(rawrecord) == 120:
-            self.readrawrecord(rawrecord)
+    def __init__(self, records=[]):
+        self.records = records
+
+
+class Flow(object):
+
+    def __init__(self, header=None, footer=None, disposals=[]):
+        self.header = header
+        self.footer = footer
+        self.disposals = disposals
+
+    def readfile(self, filepath, lastrecordidentifier='14'):
+        rows = []
+        f = open(filepath, 'r')
+        for line in f:
+            rows.append(line.replace('\r', '').replace('\n', ''))
+        if len(rows) < 3:
+            raise TypeError('Insufficient number of rows')
+        self.header = Record(rows[0])
+        self.footer = Record(rows[len(rows) - 1])
+        self.disposals = []
+        currentdisposal = Disposal()
+        for row in rows[1:len(rows) - 1]:
+            record = Record(row)
+            currentdisposal.records.append(record)
+            if record['tipo_record'] == lastrecordidentifier:
+                self.disposals.append(currentdisposal)
+                currentdisposal = Disposal()
+        lastrecordfound = False
+        for disposal in self.disposals:
+            if lastrecordidentifier in [r['tipo_record']
+                for r in disposal.records]:
+                lastrecordfound = True
+        if not lastrecordfound:
+            self.disposals = []
+            raise IndexError(
+                'Last record identifier %s for disposals not found'
+                % lastrecordidentifier)
