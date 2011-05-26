@@ -321,10 +321,9 @@ class Flow(object):
         self.footer = footer
         self.disposals = disposals
 
-    def readfile(self, filepath, lastrecordidentifier='70'):
+    def readfile(self, fileobj, lastrecordidentifier='70'):
         rows = []
-        f = open(filepath, 'r')
-        for line in f:
+        for line in fileobj:
             rows.append(line.replace('\r', '').replace('\n', ''))
         if len(rows) < 3:
             raise TypeError('Insufficient number of rows')
