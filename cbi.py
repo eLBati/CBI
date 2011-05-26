@@ -264,7 +264,7 @@ class Record(object):
         elif isinstance(key, str):
             for field in self.fields:
                 if field.name == key:
-                    return field.content
+                    return field.content.strip() # strip o non strip?
             raise IndexError('Impossible to find field with key %s' % key)
         else:
             return self.__str__()[key]
@@ -312,6 +312,28 @@ class Disposal(object):
 
     def __init__(self, records=[]):
         self.records = records
+
+    def __getitem__(self, key):
+        """Overloading in order to retrieve content by record code"""
+        if isinstance(key, str):
+            for record in self.records:
+                if record['tipo_record'] == key:
+                    return record
+            raise IndexError('Impossible to find record %s' % key)
+        else:
+            raise TypeError('Key must be string')
+
+    def __setitem__(self, key, item):
+        """Overloading in order to write content by record code"""
+        if not isinstance(item, Record):
+            raise TypeError('You can only write Record objects')
+        if isinstance(key, str):
+            for record in self.records:
+                if record['tipo_record'] == key:
+                    record = item
+            raise IndexError('Impossible to find field with key %s' % key)
+        else:
+            raise TypeError('Key must be string')
 
 
 class Flow(object):
