@@ -193,7 +193,44 @@ IB = [
     (116, 120, 'campo_non_disponibile'),
     ]
 
-RECORD_MAPPING = {
+# Struttura del record del flusso di ritorno - codice fisso “14”
+XIV_IN = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 22, 'filler2'),
+    (23, 28, 'data_pagamento'),
+    (29, 33, 'causale'),
+    (34, 46, 'importo'),
+    (47, 47, 'segno'),
+    (48, 52, 'codice_abi_esattrice'),
+    (53, 57, 'cab_esattrice'),
+    (58, 69, 'filler3'),
+    (70, 74, 'codice_abi_assuntrice'),
+    (75, 79, 'cab_assuntrice'),
+    (80, 91, 'conto'),
+    (92, 96, 'codice_azienda'),
+    (97, 97, 'tipo_codice'),
+    (98, 113, 'codice_cliente_debitore'),
+    (114, 119, 'filler4'),
+    (120, 120, 'codice_divisa'),
+    ]
+
+# Struttura del record del flusso di ritorno - codice fisso “51”
+LI_IN = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 20, 'numero_disposizione'),
+    (21, 74, 'filler2'),
+    (75, 86, 'codice_identificativo_univoco'),
+    (87, 91, 'importo'),
+    (92, 97, 'valuta_di_addebito'),
+    (98, 109, 'riferimento'),
+    (110, 115, 'data_effettiva_di_pagamento'),
+    ]
+
+OUTPUT_RECORD_MAPPING = {
     'IM': IM,
     'EF': EF,
     '14': XIV,
@@ -203,6 +240,20 @@ RECORD_MAPPING = {
     '40': XL,
     '50': L,
     '51': LI,
+    '59': LIX,
+    '70': LXX,
+    'IB': IB,
+    }
+
+INPUT_RECORD_MAPPING = {
+    'IM': IM,
+    'EF': EF,
+    '14': XIV_IN,
+    '20': XX,
+    '30': XXX,
+    '40': XL,
+    '50': L,
+    '51': LI_IN,
     '59': LIX,
     '70': LXX,
     'IB': IB,
@@ -230,8 +281,14 @@ class Field(object):
 
 class Record(object):
 
+    def _buildfield(self, field_args):
+        newfield = Field(*field_args)
+        if field_args[2] == 'tipo_record':
+            newfield.content = code
+        return newfield
+
     #we create EF record structure by default
-    def __init__(self, rawrecord='EF'):
+    def __init__(self, rawrecord='EF', recordtype='OUTPUT'):
         self.fields = []
         if len(rawrecord) == 2:
             code = rawrecord
@@ -240,13 +297,18 @@ class Record(object):
         else:
             raise TypeError('String (%s) must contain 2 or 120 chars'
                 % rawrecord)
-        if code not in RECORD_MAPPING:
-            raise IndexError('Unknown record type %s' % code)
-        for field_args in RECORD_MAPPING[code]:
-            newfield = Field(*field_args)
-            if field_args[2] == 'tipo_record':
-                newfield.content = code
-            self.appendfield(newfield)
+        if recordtype == 'OUTPUT':
+            if code not in OUTPUT_RECORD_MAPPING:
+                raise IndexError('Unknown record type %s' % code)
+            for field_args in OUTPUT_RECORD_MAPPING[code]:
+                self.appendfield(self._buildfield(field_args))
+        elif recordtype == 'INPUT':
+            if code not in INPUT_RECORD_MAPPING:
+                raise IndexError('Unknown record type %s' % code)
+            for field_args in INPUT_RECORD_MAPPING[code]:
+                self.appendfield(self._buildfield(field_args))
+        else:
+            raise TypeError('Unknown record type %s' % recordtype)
         if len(rawrecord) == 120:
             self.readrawrecord(rawrecord)
 
@@ -343,32 +405,33 @@ class Flow(object):
         self.footer = footer
         self.disposals = disposals
 
-    def readfile(self, fileobj, lastrecordidentifier='70'):
+    def readfile(self, fileobj, firstrecordidentifier='14'):
         rows = []
         for line in fileobj:
             rows.append(line.replace('\r', '').replace('\n', ''))
         if len(rows) < 3:
             raise TypeError('Insufficient number of rows')
-        self.header = Record(rows[0])
-        self.footer = Record(rows[len(rows) - 1])
+        self.header = Record(rows[0], recordtype='INPUT')
+        self.footer = Record(rows[len(rows) - 1], recordtype='INPUT')
         self.disposals = []
         currentdisposal = Disposal()
         for row in rows[1:len(rows) - 1]:
-            record = Record(row)
-            currentdisposal.records.append(record)
-            if record['tipo_record'] == lastrecordidentifier:
+            if (record['tipo_record'] == firstrecordidentifier
+                and currentdisposal.records):
                 self.disposals.append(currentdisposal)
                 currentdisposal = Disposal()
+            record = Record(row, recordtype='INPUT')
+            currentdisposal.records.append(record)
         lastrecordfound = False
         for disposal in self.disposals:
-            if lastrecordidentifier in [r['tipo_record']
+            if firstrecordidentifier in [r['tipo_record']
                 for r in disposal.records]:
                 lastrecordfound = True
         if not lastrecordfound:
             self.disposals = []
             raise IndexError(
-                'Last record identifier %s for disposals not found'
-                % lastrecordidentifier)
+                'First record identifier %s for disposals not found'
+                % firstrecordidentifier)
 
     def writefile(self, filepath):  # TODO
         f = open(filepath, 'w')
