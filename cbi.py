@@ -281,12 +281,6 @@ class Field(object):
 
 class Record(object):
 
-    def _buildfield(self, field_args):
-        newfield = Field(*field_args)
-        if field_args[2] == 'tipo_record':
-            newfield.content = code
-        return newfield
-
     #we create EF record structure by default
     def __init__(self, rawrecord='EF', recordtype='OUTPUT'):
         self.fields = []
@@ -297,18 +291,16 @@ class Record(object):
         else:
             raise TypeError('String (%s) must contain 2 or 120 chars'
                 % rawrecord)
-        if recordtype == 'OUTPUT':
-            if code not in OUTPUT_RECORD_MAPPING:
-                raise IndexError('Unknown record type %s' % code)
-            for field_args in OUTPUT_RECORD_MAPPING[code]:
-                self.appendfield(self._buildfield(field_args))
-        elif recordtype == 'INPUT':
-            if code not in INPUT_RECORD_MAPPING:
-                raise IndexError('Unknown record type %s' % code)
-            for field_args in INPUT_RECORD_MAPPING[code]:
-                self.appendfield(self._buildfield(field_args))
-        else:
-            raise TypeError('Unknown record type %s' % recordtype)
+
+        recordmapping = eval(recordtype + '_RECORD_MAPPING')
+        if code not in recordmapping:
+            raise IndexError('Unknown record type %s' % code)
+        for field_args in recordmapping[code]:
+            newfield = Field(*field_args)
+            if field_args[2] == 'tipo_record':
+                newfield.content = code
+            self.appendfield(newfield)
+
         if len(rawrecord) == 120:
             self.readrawrecord(rawrecord)
 
@@ -326,7 +318,7 @@ class Record(object):
         elif isinstance(key, str):
             for field in self.fields:
                 if field.name == key:
-                    return field.content.strip() # strip o non strip?
+                    return field.content.strip()  # strip o non strip?
             raise IndexError('Impossible to find field with key %s' % key)
         else:
             return self.__str__()[key]
@@ -372,8 +364,8 @@ class Record(object):
 
 class Disposal(object):
 
-    def __init__(self, records=[]):
-        self.records = records
+    def __init__(self, recs=[]):
+        self.records = recs[:]
 
     def __getitem__(self, key):
         """Overloading in order to retrieve content by record code"""
@@ -416,12 +408,17 @@ class Flow(object):
         self.disposals = []
         currentdisposal = Disposal()
         for row in rows[1:len(rows) - 1]:
+            record = Record(row, recordtype='INPUT')
             if (record['tipo_record'] == firstrecordidentifier
                 and currentdisposal.records):
+                ''' Appends last disposal and creates new disposal
+                with firstrecordidentifier '''
                 self.disposals.append(currentdisposal)
                 currentdisposal = Disposal()
-            record = Record(row, recordtype='INPUT')
             currentdisposal.records.append(record)
+        if currentdisposal.records:
+            ''' Appends last disposal '''
+            self.disposals.append(currentdisposal)
         lastrecordfound = False
         for disposal in self.disposals:
             if firstrecordidentifier in [r['tipo_record']
