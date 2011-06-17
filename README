@@ -43,3 +43,19 @@ It is possible to read/write by position too:
 
 >>> r[14:19]
 '300311'
+
+Moreover, it is possibile to read the whole flow (file):
+
+>>> flow = cbi.Flow()
+>>> fileobj = open('MY_PATH/MY_FILE.txt')
+>>> flow.readfile(fileobj)
+>>> for disposal in flow.disposals:
+...     print ('Codice: ' + disposal['51']['numero_disposizione']
+...         + ' - importo: ' + str(float(disposal['14']['importo']) * 0.01)
+...         + ' - Data: ' + disposal['14']['data_pagamento'])
+... 
+Codice: 4519 - importo: 145.0 - Data: 280209
+Codice: 3059 - importo: 145.0 - Data: 280209
+Codice: 18048 - importo: 160.0 - Data: 280211
+
+Every flow is composed by N disposals and every disposal by N records.
