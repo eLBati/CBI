@@ -1,30 +1,6 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    CBI python module
-#    Copyright (C) 2011 Lorenzo Battistini (<lorenzo.battistini@domsense.com>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-
-# This module helps handling CBI files
-# (see http://www.cbi-org.eu for standard)
-# See README for more info
-
 from record_mapping import OUTPUT_RECORD_MAPPING
 from record_mapping import INPUT_RECORD_MAPPING
+
 
 #TODO add fields validation as specified in standard
 class Field(object):
@@ -198,3 +174,9 @@ class Flow(object):
 
     def writefile(self, filepath):
         f = open(filepath, 'w')
+        f.write(str(self.header) + '\r\n')
+        for disposal in self.disposals:
+            for record in disposal.records:
+                f.write(str(record) + '\r\n')
+        f.write(str(self.footer) + '\r\n')
+        f.close()

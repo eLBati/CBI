@@ -2,13 +2,14 @@ from distutils.core import setup
 
 setup(name='cbi',
       version='0.2',
+      package_dir={'cbi': 'src'},
       packages=['cbi'],
       description='CBI flows wrapper',
       author='Lorenzo Battistini',
       author_email='lorenzo.battistini@domsense.com',
       url='https://code.launchpad.net/~openobject-italia-core-devs/openobject-italia/cbi',
       classifiers=[
-         'Development Status :: 4 - Beta',
+         'Development Status :: 3 - Alpha',
          'Environment :: Plugins',
          'Intended Audience :: Developers',
          'Intended Audience :: Information Technology',
