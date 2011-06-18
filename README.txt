@@ -82,4 +82,5 @@ file:
 >>> flow.disposals.append(first_disposal)
 >>> flow.writefile('MY_PATH/MY_FILE.txt')
 
-This will create a definitely incomplete CBI file :-) but this is how it works
+This will create a definitely incomplete CBI file :-) but this shows how it
+works.
