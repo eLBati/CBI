@@ -50,6 +50,24 @@ EF = [
     (53, 67, 'tot_importi_negativi'),
     (68, 82, 'tot_importi_positivi'),
     (83, 89, 'numero_record'),
+    (90, 113, 'filler2'),
+    (114, 114, 'codice_divisa'),
+    (115, 120, 'campo_non_disponibile'),
+    ]
+
+# Struttura del record di coda - codice fisso "EF" - bonifici
+EF_BON = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'campo_a_disposizione'),
+    (46, 52, 'numero_disposizioni'),
+    (53, 67, 'tot_importi_negativi'),
+    (68, 82, 'tot_importi_positivi'),
+    (83, 89, 'numero_record'),
     (90, 112, 'filler2'),
     (113, 113, 'flag_priorita_trattamento_bonifico'),
     (114, 114, 'codice_divisa'),
@@ -57,7 +75,7 @@ EF = [
     ]
 
 # Struttura del record - codice fisso “10”
-XIV = [
+X = [
     (1, 1, 'filler1'),
     (2, 3, 'tipo_record'),
     (4, 10, 'numero_progressivo'),
@@ -118,6 +136,21 @@ XVI = [
     (45, 120, 'filler3'),
     ]
 
+# Struttura del record – codice fisso “17” (coordinate beneficiario)
+XVII = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 12, 'codice_paese'),
+    (13, 14, 'check_digit'),
+    (15, 15, 'cin'),
+    (16, 20, 'codice_abi'),
+    (21, 25, 'codice_cab'),
+    (26, 37, 'numero_conto'),
+    (38, 44, 'filler2'),
+    (45, 120, 'filler3'),
+    ]
+
 # Struttura del record - codice fisso “20”
 XX = [
     (1, 1, 'filler1'),
@@ -128,6 +161,18 @@ XX = [
     (59, 82, '3_segmento'),
     (83, 106, '4_segmento'),
     (107, 120, 'filler2'),
+    ]
+
+# Struttura del record - codice fisso “20” - bonifici
+XX_BON = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 40, 'denominazione_azienda'),
+    (41, 70, 'indirizzo'),
+    (71, 110, 'localita'),
+    (101, 116, 'codifica_fiscale'),
+    (117, 120, 'filler2'),
     ]
 
 # Struttura del record - codice fisso “30”
@@ -141,6 +186,18 @@ XXX = [
     (87, 120, 'filler2'),
     ]
 
+# Struttura del record - codice fisso “30” - bonifici
+XXX_BON = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 40, '1_segmento'),
+    (41, 70, '2_segmento'),
+    (71, 100, '3_segmento'),
+    (101, 116, 'codice_fiscale_cliente'),
+    (117, 120, 'filler2'),
+    ]
+
 # Struttura del record - codice fisso “40”
 XL = [
     (1, 1, 'filler1'),
@@ -151,6 +208,28 @@ XL = [
     (46, 70, 'comune_e_sigla_provincia'),
     (71, 98, 'completamento_indirizzo'),
     (99, 100, 'codice_paese'),
+    (101, 120, 'filler2'),
+    ]
+
+# Struttura del record - codice fisso “40” - bonifici
+XL_BON = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 40, 'indirizzo'),
+    (41, 45, 'cap'),
+    (46, 70, 'comune_e_sigla_provincia'),
+    (71, 120, 'banca_sportello_beneficiario'),
+    ]
+
+# Struttura del record – codice fisso “50” - bonifici
+L_BON = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 40, '1_segmento'),
+    (41, 70, '2_segmento'),
+    (71, 100, '3_segmento'),
     (101, 120, 'filler2'),
     ]
 
@@ -182,6 +261,17 @@ LIX = [
     (4, 10, 'numero_progressivo'),
     (11, 65, '1_segmento'),
     (66, 120, '2_segmento'),
+    ]
+
+# Struttura del record – codice fisso “60”
+LX = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 40, '1_segmento'),
+    (41, 70, '2_segmento'),
+    (71, 100, '3_segmento'),
+    (101, 120, 'filler2'),
     ]
 
 # Struttura del record - codice fisso “70”
@@ -255,8 +345,11 @@ LI_IN = [
 OUTPUT_RECORD_MAPPING = {
     'IM': IM,
     'EF': EF,
+    'PC': PC,
+    '10': X,
     '14': XIV,
     '16': XVI,
+    '17': XVII,
     '20': XX,
     '30': XXX,
     '40': XL,
@@ -279,4 +372,19 @@ INPUT_RECORD_MAPPING = {
     '59': LIX,
     '70': LXX,
     'IB': IB,
+    }
+ 
+ # TODO gestire nel wrapper il mapping 'bonifici'
+BONIFICI = {
+    'EF': EF_BON,
+    'PC': PC,
+    '10': X,
+    '16': XVI,
+    '17': XVII,
+    '20': XX_BON,
+    '30': XXX_BON,
+    '40': XL_BON,
+    '50': L_BON,
+    '60': LX,
+    # ...
     }
