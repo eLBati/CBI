@@ -17,6 +17,26 @@ IM = [
     (116, 120, 'campo_non_disponibile'),
     ]
 
+# Struttura del record di testa - codice fisso "PC"
+PC = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'campo_a_disposizione'),
+    (46, 104, 'filler2'),
+    (105, 105, 'tipo_flusso'),
+    (106, 106, 'qualificatore_flusso'),
+    (107, 111, 'soggetto_veicolatore'),
+    (112, 112, 'filler3'),
+    (113, 113, 'flag_priorita_trattamento_bonifico'),
+    (114, 114, 'codice_divisa'),
+    (115, 115, 'filler4'),
+    (116, 120, 'campo_non_disponibile'),
+    ]
+
 # Struttura del record di coda - codice fisso "EF"
 EF = [
     (1, 1, 'filler1'),
@@ -30,9 +50,36 @@ EF = [
     (53, 67, 'tot_importi_negativi'),
     (68, 82, 'tot_importi_positivi'),
     (83, 89, 'numero_record'),
-    (90, 113, 'filler2'),
+    (90, 112, 'filler2'),
+    (113, 113, 'flag_priorita_trattamento_bonifico'),
     (114, 114, 'codice_divisa'),
     (115, 120, 'campo_non_disponibile'),
+    ]
+
+# Struttura del record - codice fisso “10”
+XIV = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 16, 'filler2'),
+    (17, 22, 'data_esecuzione_disposizione'),
+    (23, 28, 'data_valuta_banca_beneficiario'),
+    (29, 33, 'causale'),
+    (34, 46, 'importo'),
+    (47, 47, 'segno'),
+    (48, 52, 'codice_abi_banca_ordinante'),
+    (53, 57, 'codice_cab_banca_ordinante'),
+    (58, 69, 'conto_ordinante'),
+    (70, 74, 'codice_abi_banca_destinataria'),
+    (75, 79, 'codice_cab_banca_destinataria'),
+    (80, 91, 'conto_destinatario'),
+    (92, 96, 'codice_azienda'),
+    (97, 97, 'tipo_codice'),
+    (98, 113, 'codice_cliente_beneficiario'),
+    (114, 114, 'modalita_di_pagamento'),
+    (115, 118, 'filler4'),
+    (119, 119, 'flag_priorita_trattamento_bonifico'),
+    (120, 120, 'codice_divisa'),
     ]
 
 # Struttura del record - codice fisso “14”
