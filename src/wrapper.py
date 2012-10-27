@@ -1,6 +1,32 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#    
+#    Copyright (C) 2012 Agile Business Group sagl (<http://www.agilebg.com>)
+#    Copyright (C) 2012 Domsense srl (<http://www.domsense.com>)
+#    Copyright (C) 2012 Associazione OpenERP Italia
+#    (<http://www.openerp-italia.org>).
+#    All Rights Reserved
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
 from record_mapping import OUTPUT_RECORD_MAPPING
 from record_mapping import INPUT_RECORD_MAPPING
+from record_mapping import BONIFICI
 
+FLOWTYPE = 'OUTPUT_RECORD_MAPPING' # default value
 
 #TODO add fields validation as specified in standard
 class Field(object):
@@ -24,7 +50,7 @@ class Field(object):
 class Record(object):
 
     #we create EF record structure by default
-    def __init__(self, rawrecord='EF', recordtype='OUTPUT'):
+    def __init__(self, rawrecord='EF', flowtype=FLOWTYPE):
         self.fields = []
         if len(rawrecord) == 2:
             code = rawrecord
@@ -34,10 +60,10 @@ class Record(object):
             raise TypeError('String (%s) must contain 2 or 120 chars'
                 % rawrecord)
 
-        recordmapping = eval(recordtype + '_RECORD_MAPPING')
-        if code not in recordmapping:
+        flowtype = eval(flowtype)
+        if code not in flowtype:
             raise IndexError('Unknown record type %s' % code)
-        for field_args in recordmapping[code]:
+        for field_args in flowtype[code]:
             newfield = Field(*field_args)
             if field_args[2] == 'tipo_record':
                 newfield.content = code
@@ -139,18 +165,19 @@ class Flow(object):
         self.footer = footer
         self.disposals = disposals
 
-    def readfile(self, fileobj, firstrecordidentifier='14'):
+    def readfile(self, fileobj, firstrecordidentifier='14',
+        flowtype=FLOWTYPE):
         rows = []
         for line in fileobj:
             rows.append(line.replace('\r', '').replace('\n', ''))
         if len(rows) < 3:
             raise TypeError('Insufficient number of rows')
-        self.header = Record(rows[0], recordtype='INPUT')
-        self.footer = Record(rows[len(rows) - 1], recordtype='INPUT')
+        self.header = Record(rows[0], flowtype=flowtype)
+        self.footer = Record(rows[len(rows) - 1], flowtype=flowtype)
         self.disposals = []
         currentdisposal = Disposal()
         for row in rows[1:len(rows) - 1]:
-            record = Record(row, recordtype='INPUT')
+            record = Record(row, flowtype=flowtype)
             if (record['tipo_record'] == firstrecordidentifier
                 and currentdisposal.records):
                 ''' Appends last disposal and creates new disposal

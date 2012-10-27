@@ -1,3 +1,27 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#    
+#    Copyright (C) 2012 Agile Business Group sagl (<http://www.agilebg.com>)
+#    Copyright (C) 2012 Domsense srl (<http://www.domsense.com>)
+#    Copyright (C) 2012 Associazione OpenERP Italia
+#    (<http://www.openerp-italia.org>).
+#    All Rights Reserved
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
 # Struttura del record di testa - codice fisso "IM"
 IM = [
     (1, 1, 'filler1'),
@@ -285,6 +309,25 @@ LXX = [
     (96, 100, 'campo_a_disposizione'),
     (101, 120, 'chiavi_di_controllo'),
     ]
+# Struttura del record - codice fisso “70” - bonifici
+LXX_BON = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 25, 'filler2'),
+    (26, 30, 'campo_non_disponibile'),
+    (31, 31, 'tipo_flusso'),
+    (32, 32, 'qualificatore_flusso'),
+    (33, 37, 'soggetto_veicolatore'),
+    (38, 42, 'codice_mp'),
+    (43, 69, 'filler3'),
+    (70, 70, 'flag_richiesta'),
+    (71, 100, 'codice_univoco'),
+    (101, 110, 'filler4'),
+    (111, 111, 'cin_coordinate_bancaria'),
+    (112, 112, 'filler5'),
+    (113, 120, 'chiavi_di_controllo'),
+    ]
 
 # Struttura del record di testa - codice fisso “IB”
 IB = [
@@ -373,8 +416,7 @@ INPUT_RECORD_MAPPING = {
     '70': LXX,
     'IB': IB,
     }
- 
- # TODO gestire nel wrapper il mapping 'bonifici'
+
 BONIFICI = {
     'EF': EF_BON,
     'PC': PC,
@@ -386,5 +428,5 @@ BONIFICI = {
     '40': XL_BON,
     '50': L_BON,
     '60': LX,
-    # ...
+    '70': LXX_BON,
     }

@@ -52,6 +52,7 @@ Reading and writing files
 
 Moreover, it is possibile to read the whole flow (file):
 
+>>> wrapper.FLOWTYPE = 'INPUT_RECORD_MAPPING'
 >>> flow = wrapper.Flow()
 >>> fileobj = open('MY_PATH/MY_FILE.txt')
 >>> flow.readfile(fileobj)
