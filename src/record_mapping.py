@@ -61,6 +61,23 @@ PC = [
     (116, 120, 'campo_non_disponibile'),
     ]
 
+# 3.1 Struttura del record di testa– codice fisso "PE"
+PE = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'campo_a_disposizione'),
+    (46, 104, 'filler2'),
+    (105, 105, 'tipo_flusso'),
+    (106, 106, 'qualificatore_flusso'),
+    (107, 111, 'soggetto_veicolatore'),
+    (112, 115, 'filler3'),
+    (116, 120, 'campo_non_disponibile'),
+    ]
+
 # Struttura del record di coda - codice fisso "EF"
 EF = [
     (1, 1, 'filler1'),
@@ -95,6 +112,23 @@ EF_BON = [
     (90, 112, 'filler2'),
     (113, 113, 'flag_priorita_trattamento_bonifico'),
     (114, 114, 'codice_divisa'),
+    (115, 120, 'campo_non_disponibile'),
+    ]
+
+# Struttura del record di coda - codice fisso "EF" - bonifici esteri
+EF_BON_ES = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'campo_a_disposizione'),
+    (46, 52, 'numero_disposizioni'),
+    (53, 64, 'filler2'),
+    (65, 82, 'totale_importi'),
+    (83, 89, 'numero_record'),
+    (90, 114, 'filler3'),
     (115, 120, 'campo_non_disponibile'),
     ]
 
@@ -418,8 +452,7 @@ INPUT_RECORD_MAPPING = {
     }
 
 BONIFICI = {
-    'EF': EF_BON,
-    'PC': PC,
+    'PC': PC, # testa
     '10': X,
     '16': XVI,
     '17': XVII,
@@ -429,4 +462,11 @@ BONIFICI = {
     '50': L_BON,
     '60': LX,
     '70': LXX_BON,
+    'EF': EF_BON, # coda
+    }
+
+BONIFICI_ESTERI = {
+    'PE': PE, #testa
+    # ...
+    'EF': EF_BON_ES, #coda
     }
