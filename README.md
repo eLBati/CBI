@@ -23,6 +23,7 @@ records or read data from the records
 
 Example reading record:
 
+```
 $ python
 >>> from cbi import wrapper
 >>> r = wrapper.Record(' IM0123401234230311MIO NOME                                                                                      E      ')
@@ -32,26 +33,32 @@ $ python
 'MIO NOME            '
 >>> r['tipo_record']
 'IM'
+```
 
 Example writing record:
 
+```
 >>> r = wrapper.Record('IM')
 >>> r['data_creazione'] = '300311'
 >>> r['nome_supporto'] = 'MIO NOME BLA BLA BLA'
 >>> r['codice_divisa'] = 'E'
 >>> str(r)
 ' IM          300311MIO NOME BLA BLA BLA                                                                          E      '
+```
 
 It is possible to read/write by position too:
 
+```
 >>> r[14:19]
 '300311'
+```
 
 Reading and writing files
 -------------------------
 
 Moreover, it is possibile to read the whole flow (file):
 
+```
 >>> wrapper.FLOWTYPE = 'INPUT_RECORD_MAPPING'
 >>> flow = wrapper.Flow()
 >>> fileobj = open('MY_PATH/MY_FILE.txt')
@@ -64,12 +71,14 @@ Moreover, it is possibile to read the whole flow (file):
 Codice: 4519 - importo: 145.0 - Data: 280209
 Codice: 3059 - importo: 145.0 - Data: 280209
 Codice: 18048 - importo: 160.0 - Data: 280211
+```
 
 Every flow is composed by N disposals and every disposal by N records.
 
 If you want to create your own CBI file you can build the flow and write it to
 file:
 
+```
 >>> flow = wrapper.Flow()
 >>> flow.header = wrapper.Record('IM')
 >>> flow.footer = wrapper.Record('EF')
@@ -82,6 +91,7 @@ file:
 >>> first_disposal.records.append(first_record)
 >>> flow.disposals.append(first_disposal)
 >>> flow.writefile('MY_PATH/MY_FILE.txt')
+```
 
 This will create a definitely incomplete CBI file :-) but this shows how it
 works.
