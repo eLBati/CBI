@@ -1,0 +1,23 @@
+ IM1234512345230311AZIENDA PRIVATA SPA                                                                           E      
+ 140000001            280209070000000000014500+07600                                       1234541234            230311E
+ 200000001AZIENDA PRIVATA SPA                             VIA GENOVA, 3           00123 ROMA                            
+ 300000001COGNOME NOME                                                CODICEFISCALE---                                  
+ 400000001VIA                           00192ROMA RM                                                                    
+ 5100000011234                                                                                                          
+ 590000001QUOTA ANNO 2009                                                                                               
+ 700000001                                                                                      1                       
+ 140000002            280209070000000000014500+07600                                       1234543059            230311E
+ 200000002AZIENDA PRIVATA SPA                             VIA GENOVA, 3           00123 ROMA                            
+ 300000002COGNOME NOME                                                CODICEFISCALE---                                  
+ 400000002VIA                           00197ROMA RM                                                                    
+ 5100000023059                                                                                                          
+ 590000002QUOTA ANNO 2009                                                                                               
+ 7000000020611895006       014                                                                  1                       
+ 140000158            280211070000000000016000+07600                                       12345418048           230311E
+ 200000158AZIENDA PRIVATA SPA                             VIA GENOVA, 3           00123 ROMA                            
+ 300000158COGNOME NOME                                                CODICEFISCALE---                                  
+ 400000158VIA                           00145ROMA RM                                                                    
+ 51000015818048                                                                                                         
+ 590000158Quota anno 2011                                                                                               
+ 7000001580620155225       014                                                                  1                       
+ EF1234512345230311AZIENDA PRIVATA SPA       00001580000000000000000000000025235000001108                        E      

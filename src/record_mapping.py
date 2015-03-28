@@ -451,6 +451,20 @@ INPUT_RECORD_MAPPING = {
     'IB': IB,
     }
 
+MAV = {
+    'IM': IM,
+    'EF': EF,
+    '14': XIV_IN,
+    '20': XX,
+    '30': XXX,
+    '40': XL,
+    '50': L,
+    '51': LI_IN,
+    '59': LIX,
+    '70': LXX,
+    'IB': IB,
+    }
+
 BONIFICI = {
     'PC': PC, # testa
     '10': X,

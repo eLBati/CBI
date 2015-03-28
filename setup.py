@@ -18,6 +18,6 @@ setup(name='cbi',
          'Programming Language :: Python',
          'Topic :: Office/Business',
       ],
-      long_description=open('README.txt').read(),
+      long_description=open('README.rst').read(),
       license='GPL-3',
      )

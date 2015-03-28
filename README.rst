@@ -15,6 +15,11 @@ Enterprises and Banks
 The module
 __________
 
+Installation
+------------
+
+pip install https://github.com/eLBati/CBI/archive/master.zip
+
 Basic usage
 -----------
 
@@ -24,6 +29,7 @@ records or read data from the records
 Example reading record:
 
 $ python
+
 >>> from cbi import wrapper
 >>> r = wrapper.Record(' IM0123401234230311MIO NOME                                                                                      E      ')
 >>> r['data_creazione']
@@ -42,7 +48,7 @@ Example writing record:
 >>> str(r)
 ' IM          300311MIO NOME BLA BLA BLA                                                                          E      '
 
-It is possible to read/write by position too:
+It is also possible to read/write by position:
 
 >>> r[14:19]
 '300311'
@@ -52,16 +58,16 @@ Reading and writing files
 
 Moreover, it is possibile to read the whole flow (file):
 
->>> wrapper.FLOWTYPE = 'INPUT_RECORD_MAPPING'
+>>> wrapper.FLOWTYPE = 'MAV'
 >>> flow = wrapper.Flow()
->>> fileobj = open('MY_PATH/MY_FILE.txt')
+>>> fileobj = open('../samples/MAV.txt')
 >>> flow.readfile(fileobj)
 >>> for disposal in flow.disposals:
 ...     print ('Codice: ' + disposal['51']['numero_disposizione']
 ...         + ' - importo: ' + str(float(disposal['14']['importo']) * 0.01)
 ...         + ' - Data: ' + disposal['14']['data_pagamento'])
 ... 
-Codice: 4519 - importo: 145.0 - Data: 280209
+Codice: 1234 - importo: 145.0 - Data: 280209
 Codice: 3059 - importo: 145.0 - Data: 280209
 Codice: 18048 - importo: 160.0 - Data: 280211
 
