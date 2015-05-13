@@ -413,10 +413,7 @@ LI_IN = [
     (11, 20, 'numero_disposizione'),
     (21, 74, 'filler2'),
     (75, 86, 'codice_identificativo_univoco'),
-    (87, 91, 'importo'),
-    (92, 97, 'valuta_di_addebito'),
-    (98, 109, 'riferimento'),
-    (110, 115, 'data_effettiva_di_pagamento'),
+    (87, 120, 'filler3'),
     ]
 
 OUTPUT_RECORD_MAPPING = {
