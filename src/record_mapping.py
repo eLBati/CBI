@@ -228,7 +228,7 @@ XX_BON = [
     (4, 10, 'numero_progressivo'),
     (11, 40, 'denominazione_azienda'),
     (41, 70, 'indirizzo'),
-    (71, 110, 'localita'),
+    (71, 100, 'localita'),
     (101, 116, 'codifica_fiscale'),
     (117, 120, 'filler2'),
     ]
